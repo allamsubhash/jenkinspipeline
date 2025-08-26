@@ -8,21 +8,31 @@ pipeline {
     stages {
         stage('Clone GitHub Repo') {
             steps {
-                git branch: 'main', credentialsId: 'github-https', url: 'https://github.com/your-username/Pipelining_pythonApp.git'
+                git(
+                    url: 'https://github.com/allamsubhash/jenkinspipeline.git',
+                    branch: 'main',
+                    credentialsId: 'github-https'
+                )
             }
         }
 
         stage('Set Up Python Virtual Environment') {
             steps {
-                bat '"C:\\Users\\your-username\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m venv venv'
-                bat '.\\venv\\Scripts\\python.exe -m pip install --upgrade pip'
-                bat '.\\venv\\Scripts\\pip install flask pandas numpy tensorflow' 
+                sh '''
+                    /Library/Frameworks/Python.framework/Versions/3.13/bin/python3
+/opt/homebrew/bin/python3
+/usr/local/bin/python3
+/usr/bin/python3
+                '''
             }
         }
 
         stage('Run Flask App') {
             steps {
-                bat '.\\venv\\Scripts\\python app.py'
+                sh '''
+                    . ${VENV}/bin/activate
+                    ${VENV}/bin/python app.py
+                '''
             }
         }
     }
